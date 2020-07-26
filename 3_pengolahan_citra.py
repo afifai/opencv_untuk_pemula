@@ -1,3 +1,4 @@
+import numpy as np
 import cv2
 import imutils
 
@@ -42,6 +43,44 @@ flip_verhor = cv2.flip(image, -1)
 # CROPPING
 kepala = image[48:225, 90:240]
 badan = image[227:384, 80:376]
-cv2.imshow("Kepala", kepala)
-cv2.imshow("Badan", badan)
+# cv2.imshow("Kepala", kepala)
+# cv2.imshow("Badan", badan)
+# cv2.waitKey(0)
+
+# ARITMATIKA CITRA
+
+M = np.ones(image.shape, dtype="uint8") * 50
+added = cv2.add(image, M)
+# cv2.imshow("Added", added)
+
+subtracted = cv2.subtract(image, M)
+# cv2.imshow("Subsctracted", subtracted)
+# cv2.waitKey(0)
+
+#MASKING
+mask = np.zeros(image.shape[:2], dtype='uint8')
+cv2.rectangle(mask, (90, 48), (240, 225), 225, -1)
+# cv2.imshow("Mask", mask)
+
+masked = cv2.bitwise_and(image, image, mask=mask)
+# cv2.imshow("Mask Diimplementasikan", masked)
+# cv2.waitKey(0)
+
+# SPLIT CHANNEL
+(B, G, R) = cv2.split(image)
+
+cv2.imshow('R', R)
+cv2.imshow('G', G)
+cv2.imshow('B', B)
+cv2.waitKey(0)
+
+merged = cv2.merge([B, G, R])
+cv2.imshow("Merged", merged)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+zeros = np.zeros(image.shape[:2], dtype='uint8')
+cv2.imshow("Red", cv2.merge([zeros, zeros, R]))
+cv2.imshow("Green", cv2.merge([zeros, G, zeros]))
+cv2.imshow("Blue", cv2.merge([B, zeros, zeros]))
 cv2.waitKey(0)
